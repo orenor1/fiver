@@ -1,7 +1,15 @@
 .app-footer{
-    background-color: #111;
-    color: $clr4;
+    // color: $clr4;
     padding: 20px;
-    margin: 10px;
-    text-align: center;
-}
+    // margin: 10px;
+    // text-align: center;
+    border: 1px solid black;
+  
+
+    p {
+        font-size: 1.5em;
+        // background-color: $clr5;
+        padding: 5px;
+    }
+} 
+
