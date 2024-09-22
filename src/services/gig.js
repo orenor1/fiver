@@ -14,7 +14,7 @@ const gig =[ {
   description: "Make unique logo...",
   avgResponseTime: 1,
   loc: "Ghana",
-  imgUrls: [""],
+  imgUrls: ["https://fiverr-res.cloudinary.com/images/t_main1,q_auto,f_auto,q_auto,f_auto/gigs/143871884/original/cdba0a3892ba81a7c1b202b10e9385825787f4b6/create-modern-minimalist-logo-design.png"],
   tags: [
     "Arts And Crafts", "Logo Design"
   ],
@@ -136,7 +136,7 @@ const gig =[ {
   description: "As a recruiter, I've reviewed thousands of resumes",
   avgResponseTime: 6,
   loc: "Ghana",
-  imgUrls: [""],
+  imgUrls: ["https://fiverr-res.cloudinary.com/images/t_main1,q_auto,f_auto,q_auto,f_auto/gigs/110915237/original/d47af7d3113c9950228e0e3d612d86d75f9e729c/create-a-professional-cv-resume-and-covering-letter.jpg"],
   tags: [
     "writing-translation"
   ],
@@ -180,7 +180,7 @@ const gig =[ {
   description: " I'm a GOOGLE LLC Certified & Award Winner Digital Marketer with 5+years of experience in video marketing and promotion.",
   avgResponseTime: 5,
   loc: "Ghana",
-  imgUrls: [""],
+  imgUrls: ["https://fiverr-res.cloudinary.com/images/t_main1,q_auto,f_auto,q_auto,f_auto/gigs/206055216/original/9330fac8da20152170d5341d3d3d83abb9b9828a/do-youtube-promotion-with-google-adword.jpg"],
   tags: [
     "video-animation"
   ],
@@ -247,7 +247,7 @@ const gig =[ {
       "by": {
         "_id": "u103",
         "fullname": "user3",
-        "imgUrl": "/img/img3.jpg"
+        "imgUrl": "https://fiverr-res.cloudinary.com/images/t_main1,q_auto,f_auto,q_auto,f_auto/gigs/355425247/original/b1b5c2079fdb5aeeb0f051306ffc4b3e97d5a376/prepare-1040-1065-1120-and-1120s-us-tax-returns-for-corp-llc.png"
       }
     }
 
