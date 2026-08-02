@@ -17,9 +17,6 @@ const baseUrl = (process.env.NODE_ENV === 'production') ? '' : '//localhost:3030
 // export const socketService = createSocketService()
 export const socketService = createDummySocketService()
 
-// for debugging from console
-window.socketService = socketService
-
 socketService.setup()
 
 
@@ -100,7 +97,6 @@ function createDummySocketService() {
       this.emit(SOCKET_EVENT_USER_UPDATED, { ...userService.getLoggedinUser(), score: 555 })
     }
   }
-  window.listenersMap = listenersMap
   return socketService
 }
 
