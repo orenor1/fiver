@@ -1,5 +1,6 @@
 import io from 'socket.io-client'
 import { userService } from './user.service'
+import { createListeners } from './listeners.service'
 
 export const SOCKET_EVENT_ADD_MSG = 'chat-add-msg'
 export const SOCKET_EMIT_SEND_MSG = 'chat-send-msg'
@@ -57,11 +58,12 @@ function createSocketService() {
 }
 
 function createDummySocketService() {
-  var listenersMap = {}
+  const listeners = createListeners()
+  const { listenersMap } = listeners
   const socketService = {
     listenersMap,
     setup() {
-      listenersMap = {}
+      listeners.clear()
     },
     terminate() {
       this.setup()
@@ -73,24 +75,16 @@ function createDummySocketService() {
       console.log('Dummy socket service here, logout - got it')
     },
     on(eventName, cb) {
-      listenersMap[eventName] = [...(listenersMap[eventName]) || [], cb]
+      listeners.on(eventName, cb)
     },
     off(eventName, cb) {
-      if (!listenersMap[eventName]) return
-      if (!cb) delete listenersMap[eventName]
-      else listenersMap[eventName] = listenersMap[eventName].filter(l => l !== cb)
+      listeners.off(eventName, cb)
     },
     emit(eventName, data) {
-      var listeners = listenersMap[eventName]
-      if (eventName === SOCKET_EMIT_SEND_MSG) {
-        listeners = listenersMap[SOCKET_EVENT_ADD_MSG]
-      }
-
-      if (!listeners) return
-
-      listeners.forEach(listener => {
-        listener(data)
-      })
+      const targetEvent = (eventName === SOCKET_EMIT_SEND_MSG)
+        ? SOCKET_EVENT_ADD_MSG
+        : eventName
+      listeners.emit(targetEvent, data)
     },
     // Functions for easy testing of pushed data
     testChatMsg() {

@@ -1,3 +1,5 @@
+import { utilService } from './util.service'
+
 export const storageService = {
     query,
     get,
@@ -7,7 +9,7 @@ export const storageService = {
 }
 
 function query(entityType, delay = 500) {
-    var entities = JSON.parse(localStorage.getItem(entityType)) || []
+    const entities = utilService.loadFromStorage(entityType) || []
     return new Promise(resolve => setTimeout(() => resolve(entities), delay))
 }
 
@@ -20,7 +22,7 @@ function get(entityType, entityId) {
 }
 
 function post(entityType, newEntity) {
-    newEntity._id = _makeId()
+    newEntity._id = utilService.makeId()
     return query(entityType).then(entities => {
         entities.push(newEntity)
         _save(entityType, entities)
@@ -51,14 +53,5 @@ function remove(entityType, entityId) {
 // Private functions
 
 function _save(entityType, entities) {
-    localStorage.setItem(entityType, JSON.stringify(entities))
-}
-
-function _makeId(length = 5) {
-    var text = ''
-    var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
-    for (var i = 0; i < length; i++) {
-        text += possible.charAt(Math.floor(Math.random() * possible.length))
-    }
-    return text
+    utilService.saveToStorage(entityType, entities)
 }
