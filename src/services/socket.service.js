@@ -32,6 +32,7 @@ function createSocketService() {
       if (user) this.login(user._id)
     },
     on(eventName, cb) {
+      if (!socket) throw new Error(`Cannot listen to ${eventName}, socket is not connected`)
       socket.on(eventName, cb)
     },
     off(eventName, cb = null) {
@@ -40,13 +41,14 @@ function createSocketService() {
       else socket.off(eventName, cb)
     },
     emit(eventName, data) {
+      if (!socket) throw new Error(`Cannot emit ${eventName}, socket is not connected`)
       socket.emit(eventName, data)
     },
     login(userId) {
-      socket.emit(SOCKET_EMIT_LOGIN, userId)
+      this.emit(SOCKET_EMIT_LOGIN, userId)
     },
     logout() {
-      socket.emit(SOCKET_EMIT_LOGOUT)
+      this.emit(SOCKET_EMIT_LOGOUT)
     },
     terminate() {
       socket = null
@@ -89,7 +91,11 @@ function createDummySocketService() {
       if (!listeners) return
 
       listeners.forEach(listener => {
-        listener(data)
+        try {
+          listener(data)
+        } catch (err) {
+          console.error(`Socket listener for ${eventName} failed`, err)
+        }
       })
     },
     // Functions for easy testing of pushed data

@@ -44,7 +44,8 @@ async function update({ _id, score }) {
     // const user = await httpService.put(`user/${_id}`, {_id, score})
 
     // When admin updates other user's details, do not update loggedinUser
-    if (getLoggedinUser()._id === user._id) saveLocalUser(user)
+    const loggedinUser = getLoggedinUser()
+    if (loggedinUser && loggedinUser._id === user._id) saveLocalUser(user)
     return user
 }
 
@@ -52,7 +53,8 @@ async function login(userCred) {
     const users = await storageService.query('user')
     const user = users.find(user => user.username === userCred.username)
     // const user = await httpService.post('auth/login', userCred)
-    if (user) return saveLocalUser(user)
+    if (!user) throw new Error(`Login failed, no such user: ${userCred.username}`)
+    return saveLocalUser(user)
 }
 
 async function signup(userCred) {
@@ -84,7 +86,15 @@ function saveLocalUser(user) {
 }
 
 function getLoggedinUser() {
-    return JSON.parse(sessionStorage.getItem(STORAGE_KEY_LOGGEDIN_USER))
+    const json = sessionStorage.getItem(STORAGE_KEY_LOGGEDIN_USER)
+    if (!json) return null
+    try {
+        return JSON.parse(json)
+    } catch (err) {
+        console.error('Corrupted loggedin user in sessionStorage, clearing it', err)
+        sessionStorage.removeItem(STORAGE_KEY_LOGGEDIN_USER)
+        return null
+    }
 }
 
 

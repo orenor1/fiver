@@ -7,7 +7,15 @@ export const storageService = {
 }
 
 function query(entityType, delay = 500) {
-    var entities = JSON.parse(localStorage.getItem(entityType)) || []
+    var entities = []
+    const json = localStorage.getItem(entityType)
+    if (json) {
+        try {
+            entities = JSON.parse(json) || []
+        } catch (err) {
+            return Promise.reject(new Error(`Query failed, corrupted data for: ${entityType}`, { cause: err }))
+        }
+    }
     return new Promise(resolve => setTimeout(() => resolve(entities), delay))
 }
 
@@ -51,7 +59,11 @@ function remove(entityType, entityId) {
 // Private functions
 
 function _save(entityType, entities) {
-    localStorage.setItem(entityType, JSON.stringify(entities))
+    try {
+        localStorage.setItem(entityType, JSON.stringify(entities))
+    } catch (err) {
+        throw new Error(`Save failed for: ${entityType}`, { cause: err })
+    }
 }
 
 function _makeId(length = 5) {
