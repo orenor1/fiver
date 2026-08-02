@@ -54,11 +54,22 @@ function debounce(func, timeout = 300) {
 }
 
 function saveToStorage(key, value) {
-    localStorage.setItem(key, JSON.stringify(value))
+    try {
+        localStorage.setItem(key, JSON.stringify(value))
+    } catch (err) {
+        throw new Error(`Failed saving to storage, key: ${key}`, { cause: err })
+    }
 }
 
 function loadFromStorage(key) {
     const data = localStorage.getItem(key)
-    return (data) ? JSON.parse(data) : undefined
+    if (!data) return undefined
+    try {
+        return JSON.parse(data)
+    } catch (err) {
+        console.error(`Corrupted data in storage, key: ${key}, removing it`, err)
+        localStorage.removeItem(key)
+        return undefined
+    }
 }
 

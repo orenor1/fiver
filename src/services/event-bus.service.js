@@ -11,7 +11,14 @@ function createEventEmitter() {
         },
         emit(evName, data) {
             if (!listenersMap[evName]) return
-            listenersMap[evName].forEach(listener => listener(data))
+            listenersMap[evName].forEach(listener => {
+                try {
+                    listener(data)
+                } catch (err) {
+                    // Keep notifying the remaining listeners even if one fails
+                    console.error(`Listener for event ${evName} failed`, err)
+                }
+            })
         }
     }
 }
